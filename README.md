@@ -1,13 +1,14 @@
-# Java AI Chatbot Starter
+# Java AI Chatbot
 
-A small Java project that demonstrates an AI-powered chat bot using LangChain4j with the OpenAI API.
+A simple Java chatbot project built with Spring Boot and LangChain4j. It exposes a REST API and a browser UI for chatting with an OpenAI model.
 
 ## Features
 
-- Console-based Java chatbot
-- Uses LangChain4j for model interaction
-- Reads API key from `OPENAI_API_KEY`
-- Very easy to extend with web UI or Spring Boot
+- Spring Boot web app
+- REST API endpoint for chat
+- Browser-based chat UI
+- OpenAI integration via LangChain4j
+- Easy to extend with memory, RAG, or database persistence
 
 ## Prerequisites
 
@@ -15,12 +16,12 @@ A small Java project that demonstrates an AI-powered chat bot using LangChain4j 
 - Maven
 - OpenAI API key
 
-## Setup
+## Run locally
 
 1. Export your API key:
 
 ```bash
-export OPENAI_API_KEY="your-api-key-here"
+export OPENAI_API_KEY="your-api-key"
 ```
 
 2. Build the project:
@@ -29,32 +30,45 @@ export OPENAI_API_KEY="your-api-key-here"
 mvn clean package
 ```
 
-3. Run the app:
+3. Start the app:
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.example.chatbot.ChatbotApplication"
+mvn spring-boot:run
 ```
 
-Or run the jar:
-
-```bash
-java -jar target/java-ai-chatbot-1.0.0.jar
-```
-
-## Example conversation
+4. Open the UI in your browser:
 
 ```text
-You: Hello
-Bot: Hi! How can I help you today?
+http://localhost:8080
 ```
 
-## Notes
+## API
 
-This repository is a starter template. You can later add:
+### POST /api/chat
 
-- Spring Boot REST API
-- Web UI (React or Thymeleaf)
-- Database persistence
-- RAG (retrieval-augmented generation)
-- Multiple LLM providers
+Request body:
+
+```json
+{
+  "message": "Hello there!"
+}
+```
+
+Response:
+
+```json
+{
+  "reply": "Hi! How can I help you today?"
+}
+```
+
+## Project goals
+
+This starter can be extended into:
+
+- customer support chatbot
+- document Q&A assistant
+- knowledge-base chat app
+- multi-agent workflow bot
+- enterprise AI assistant
 

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java AI Chatbot</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .chat-box {
+            width: min(800px, 90%);
+            background: #111827;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        #messages {
+            min-height: 320px;
+            max-height: 420px;
+            overflow-y: auto;
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .message {
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+        .message strong {
+            color: #93c5fd;
+        }
+        .controls {
+            display: flex;
+            gap: 0.75rem;
+        }
+        input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        button {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+<div class="chat-box">
+    <h1>Java AI Chatbot</h1>
+    <div id="messages"></div>
+    <div class="controls">
+        <input id="messageInput" type="text" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+    </div>
+</div>
+
+<script>
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function appendMessage(role, text) {
+        const div = document.createElement('div');
+        div.className = 'message';
+        div.innerHTML = `<strong>${role}:</strong> ${text}`;
+        messagesEl.appendChild(div);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const message = inputEl.value.trim();
+        if (!message) return;
+
+        appendMessage('You', message);
+        inputEl.value = '';
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+
+            const data = await response.json();
+            appendMessage('Bot', data.reply || 'No response');
+        } catch (error) {
+            appendMessage('Bot', 'Error contacting server: ' + error.message);
+        }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    inputEl.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') sendMessage();
+    });
+
+    appendMessage('Bot', 'Hello! I am your Java AI assistant. How can I help?');
+</script>
+</body>
+</html>
